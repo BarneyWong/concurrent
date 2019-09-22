@@ -9,7 +9,7 @@ public class Run {
     public static void main(String[] args) throws InterruptedException {
 //        Service service = new Service();
 //        ThreadA threadA = new ThreadA(service);
-//        ThreadB threadB = new ThreadB(service);
+//        phaser5.ThreadB threadB = new phaser5.ThreadB(service);
 //        ThreadC threadC = new ThreadC(service);
 //        threadA.setName("A");
 //        threadB.setName("B");
