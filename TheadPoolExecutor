@@ -1,0 +1,119 @@
+1.ThreadPoolExecutor的父类AbstractExecutorService
+
+2.Constructors
+	
+	ThreadPoolExecutor( int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,BlockingQueue<Runnable> workQueue)
+
+	ThreadPoolExecutor( int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,BlockingQueue<Runnable> workQueue,RejectedExecutionHandler handler)
+
+	ThreadPoolExecutor( int corePoolSize,int maximumPoolSize,long keePAliveTime,TimeUnit unit,BlockingQueue<Runnable> workQueue,ThreadFactory threadFactory)
+
+	ThreadPoolExecutor( int corePoolSize,int maximumPoolSize,long keePAliveTime,TimeUnit unit,BlockingQueue<Runnable> workQueue,ThreadFactory threadFactory，RejectedExecutionHandler handler)
+
+对于ThreadPoolExecutor的工作流程
+	是否大于核心线程数，
+	工作队列是否已满
+	是否达到最大线程数
+	执行拒绝策略
+
+Instance Methods
+	
+	shutdown()
+		Initiates an orderly shutdown in which previously submitted tasks are executed,but no new tasks will be accepted
+		调用shutdown()方法后，线程池会继续运行直到所有的任务执行完成才会停止，不再接受新的任务，继续添加新任务会抛出异常。
+	shutdownNow()
+		Attempts to stop all actively executing tasks,halts the processing of waiting tasks,and returns a list of the tasks that were awaiting execution
+		立刻中断正在执行的所有任务，对于未执行的任务不再执行，将从队列中清除，如果再任务中存在 if(Thread.currentThread().isInterrupted()==true)语句来判断当前线程的中断状态，则再调用shutdownNow方法后，会抛出InterruptedException异常。
+
+	isShutdown()
+		Returns true if this executor has been shut down
+
+	isTerminating
+		Returns true if this executor is in the process of terminating after shutdown() or shutdownNow() but has not completely terminated
+
+	isTerminated
+		Returns true if all tasks have completed following shutdown
+
+		shutdown或shutdownNow：发出关闭线程池的命令
+		isShutdown：判断关闭线程池的命令是否已经发出
+		isTerminating：判断线程池是否正在关闭
+		isTerminated：判断线程池是否已经关闭
+
+	awaitTermination(long timeout,TimeUnit unit)
+		Blocks until all tasks have completed execution after a shutdown request,or the timeout occurs ,or the curreent thread is interrupted, whichever hppens first.
+		等待timeout后判断线程池是否已经停止工作
+
+	setThreadFactory(ThreadFactory threadFactory)
+		Sets the thread factory used to create new thread.
+
+	setRejectedExecutionHandler(RejectedExecutionHandler handler)
+		Sets a new handler for unexecutable threads
+
+	getRejectedExecutionHandler()
+		Returns the current handler for unexecutable threads
+
+	allowCoreThreadTimeOut()
+		Returns true if this pool allows core threads to time out and terminate if no tasks arrive within the keepAlive time ,being replaced if needed when new tasks arrive
+
+	allowCoreThreadTimeOut(boolean value)
+		Sets the policy governing whether core threads may time out and terminate if no tasks arrive within the keepAlive time ,being replaced if needed when new tasks arrive
+
+	preStartCoreThread()
+		Starts a core thread ,causing it to idly wait for work.
+
+	preStartAllCoreThreads()
+		Starts all core threads causing them to idly wait for work		
+
+	afterExecute(Runnable r ,Throwable t)
+		Method invoked upon completion of execution of the given Runnable
+
+	beforeExecute(Thread t, Runnable r) 
+		Method invoked prior to executing the given Runnable in the given thread.
+
+	remove(Runnable task)
+		Removes this task from the executor's external queue if it is present, thus causing it not to be run if it has not alread started
+
+	getActiveCount()
+		Returns the approximate number of threads thar are actively executing tasks
+
+	getCompletedTaskCount()
+		Returns the approximate total number of tasks have completed execution
+
+	getCorePoolSize()
+		Returns the core number of threads
+
+	getMaximumPoolSize()
+		Returns the maximum allowed number of threads
+
+	getPoolSize()
+		Returns the current number of threads in the pool
+
+	getTaskCount()
+
+	execute(Runnable command)
+		Executes the given task sometime in the future.
+
+	submit(Callable<T> task)
+		返回值 <T> Future<T>
+
+	submit(Runnable task)
+		Future<?>
+
+	submit(Runnable task ,T result)
+		<T> Future<T>
+
+Nested Classes
+	ThreadPoolExecutor.AbortPolicy
+		A handler for rejected tasks that throws a RejectedExecutionExecption
+
+	ThreadPoolExecutor.CallerRunsPolicy
+		A handler for rejected tasks that runs the rejected task directly in the calling thread of the execute method, unless the executor has been shut down,in which case the case the task is discarded
+
+	ThreadPoolExecutor.DiscardOldestPolicy
+		A handler for rejected tasks that discards the oldest unhandled request and the retries execute,unless the executor is shut down ,in which case the task is discarded
+
+	THreadPoolExecutor.DiscardPolicy
+		A handler for rejected tasks that silently discards the rejected task
+
+
+
